@@ -15,3 +15,14 @@ application/logs/*
 !application/logs/index.html
 !application/logs/.htaccess
 /vendor/
+/ci_sessions/
+/update_pack/
+/uploads/
+/system/
+/application/config/database.php
+/application/controllers/Install.php
+/application/views/install/*
+*.sql
+*.sql.gz
+.htaccess
+/.idea/
