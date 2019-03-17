@@ -61,6 +61,24 @@
                                                   </select>
                                               </div>
                                         </div>
+                                        <div class="form-group">
+                                            <label class="form-label"><?php echo get_phrase('thousand_separator'); ?></label>
+                                            <div class="controls">
+                                                <input type="text" name="thousand_separator" class="form-control" value="<?php echo get_settings('thousand_separator'); ?>" placeholder="Use dot '.' or coma ','">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label"><?php echo get_phrase('decimal_separator'); ?></label>
+                                            <div class="controls">
+                                                <input type="text" name="decimal_separator" class="form-control" value="<?php echo get_settings('decimal_separator'); ?>" placeholder="Use dot '.' or coma ','">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label"><?php echo get_phrase('number_of_decimal'); ?></label>
+                                            <div class="controls">
+                                                <input type="text" name="number_of_decimal" class="form-control" value="<?php echo get_settings('number_of_decimal'); ?>" placeholder="Number of decimal. ex: 2 for 2,50">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

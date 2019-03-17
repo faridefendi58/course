@@ -54,8 +54,16 @@ if (! function_exists('get_settings')) {
     $CI->load->database();
 
     $CI->db->where('key', $key);
-    $result = $CI->db->get('settings')->row()->value;
-    return $result;
+
+    $value = 0;
+    try {
+        $row = $CI->db->get('settings')->row();
+        if (is_object($row)) {
+            $value = $row->value;
+        }
+    } catch (Exception $e) {}
+
+    return $value;
   }
 }
 
@@ -72,6 +80,19 @@ if (! function_exists('currency')) {
 
 			$CI->db->where('key', 'currency_position');
 			$position = $CI->db->get('settings')->row()->value;
+
+            $CI->db->where('key', 'thousand_separator');
+            $thousand_separator = $CI->db->get('settings')->row()->value;
+
+            $CI->db->where('key', 'decimal_separator');
+            $decimal_separator = $CI->db->get('settings')->row()->value;
+
+            $CI->db->where('key', 'number_of_decimal');
+            $number_of_decimal = $CI->db->get('settings')->row()->value;
+
+            if (!empty($thousand_separator) && !empty($decimal_separator)) {
+                $price = number_format($price, $number_of_decimal, $decimal_separator, $thousand_separator);
+            }
 
 			if ($position == 'right') {
 				return $price.$symbol;

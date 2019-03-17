@@ -91,6 +91,31 @@
             </ul>
         </li>
 
+        <li class = "<?php echo is_multi_level_active(['orders', 'pending', 'active', 'complete'], 1); ?>">
+            <a href="javascript:;">
+                <i class="fa fa-briefcase"></i>
+                <span><?php echo get_phrase('orders'); ?></span>
+            </a>
+            <ul class="sub-menu">
+                <li class = "<?php echo is_active('pending'); ?>" >
+                    <a href="<?php echo site_url('admin/orders/view/0'); ?>">
+                        <?php echo get_phrase('pending_order'); ?>
+                    </a>
+                </li>
+                <li class = "<?php echo is_active('active'); ?>" >
+                    <a href="<?php echo site_url('admin/orders/view/1'); ?>">
+                        <?php echo get_phrase('active_order'); ?>
+                    </a>
+                </li>
+                <li class = "<?php echo is_active('complete'); ?>" >
+                    <a href="<?php echo site_url('admin/orders/view/4'); ?>">
+                        <?php echo get_phrase('complete_order'); ?>
+                    </a>
+                </li>
+                <br>
+            </ul>
+        </li>
+
         <li class = "<?php echo is_multi_level_active(['enroll_history', 'enroll_student'], 1); ?>">
             <a href="javascript:;">
                 <i class="fa fa-history"></i>

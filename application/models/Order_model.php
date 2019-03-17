@@ -10,6 +10,7 @@ class Order_model extends CI_Model {
     const STATUS_ACTIVE = 1;
     const STATUS_SUSPENDED = 2;
     const STATUS_CANCELED = 3;
+    const STATUS_COMPLETED = 4;
 
     function __construct()
     {
@@ -130,5 +131,31 @@ class Order_model extends CI_Model {
             $data['date_added'] = strtotime(date('D, d-M-Y'));
             $this->db->insert('payment', $data);
         }
+    }
+
+    public function get_orders_by_status($status = 0) {
+        $this->db->select('orders.*, users.first_name, users.last_name, course.title AS course_name');
+        $this->db->where('orders.status', $status);
+
+        $this->db->join('users', 'orders.user_id = users.id', 'left');
+        $this->db->join('course', 'orders.course_id = course.id', 'left');
+
+        return $this->db->get('orders');
+    }
+
+    public function getStatus($id_status = null) {
+        $items = [
+            self::STATUS_PENDING => 'Pending',
+            self::STATUS_ACTIVE => 'Active',
+            self::STATUS_SUSPENDED => 'Suspended',
+            self::STATUS_CANCELED => 'Canceled',
+            self::STATUS_COMPLETED => 'Completed',
+        ];
+
+        if ($id_status >= 0) {
+            return $items[$id_status];
+        }
+
+        return $items;
     }
 }

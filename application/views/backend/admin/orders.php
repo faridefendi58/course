@@ -5,7 +5,7 @@
             <?php echo get_phrase('dashboard'); ?>
         </a>
     </li>
-    <li><a href="#" class="active"><?php echo get_phrase('invoices'); ?></a> </li>
+    <li><a href="#" class="active"><?php echo get_phrase('orders'); ?></a> </li>
 </ol>
 <h2><i class="fa fa-arrow-circle-o-right"></i> <?php echo $page_title; ?></h2>
 <br />
@@ -24,40 +24,44 @@
                     <tr>
                         <th><?php echo get_phrase('user_name'); ?></th>
                         <th><?php echo get_phrase('invoice_number'); ?></th>
-                        <th><?php echo get_phrase('total'); ?></th>
-                        <th><?php echo get_phrase('date_added'); ?></th>
+                        <th><?php echo get_phrase('course_name'); ?></th>
+                        <th><?php echo get_phrase('status'); ?></th>
+                        <th><?php echo get_phrase('date_order'); ?></th>
                         <th><?php echo get_phrase('actions'); ?></th>
                     </tr>
                     </thead>
                     <tbody>
-                    <?php foreach ($invoices->result_array() as $invoice): ?>
+                    <?php foreach ($orders->result_array() as $order): ?>
                         <tr class="gradeU">
                             <td>
-                                <a href="<?php echo site_url('/admin/user_form/edit_user_form/'. $invoice['user_id']); ?>" target="_blank">
-                                <?php echo $invoice['first_name']. ' '. $invoice['last_name']; ?>
+                                <a href="<?php echo site_url('/admin/user_form/edit_user_form/'. $order['user_id']); ?>" target="_blank">
+                                    <?php echo $order['first_name']. ' '. $order['last_name']; ?>
                                 </a>
                             </td>
-                            <td><?php echo $this->invoice_model->getInvoiceFormatedNumber(['id' => $invoice['id']]); ?></td>
-                            <td style="text-align: right;"><?php echo currency($invoice['cash']); ?></td>
-                            <td><?php echo date('D, d-M-Y', $invoice['date_added']); ?></td>
+                            <td><?php echo $this->invoice_model->getInvoiceFormatedNumber(['id' => $order['invoice_id']]); ?></td>
+                            <td><?php echo $order['course_name']; ?></td>
+                            <td style="text-align: center;"><?php echo $this->order_model->getStatus($order['status']); ?></td>
+                            <td><?php echo date('D, d-M-Y', $order['date_added']); ?></td>
                             <td>
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-default" data-toggle="dropdown"> <i class = "fa fa-ellipsis-v"></i> </button>
                                     <ul class="dropdown-menu pull-right">
                                         <?php /*<li>
-                                            <a href="<?php echo site_url('admin/invoice_form/edit_invoice_form/'.$invoice['id']) ?>">
+                                            <a href="<?php echo site_url('admin/invoice_form/edit_invoice_form/'.$order['id']) ?>">
                                                 <?php echo get_phrase('edit');?>
                                             </a>
                                         </li>
                                         <li class="divider"></li>*/ ?>
+                                        <?php if ($order['status'] == 0): ?>
                                         <li>
-                                            <a href="<?php echo site_url('admin/invoices/mark_as_paid/'.$invoice['id']) ?>">
-                                                <?php echo get_phrase('mark_as_paid');?>
+                                            <a href="<?php echo site_url('admin/orders/activate/'.$order['id']) ?>">
+                                                <?php echo get_phrase('activate');?>
                                             </a>
                                         </li>
                                         <li class="divider"></li>
+                                        <?php endif; ?>
                                         <li>
-                                            <a href="#" onclick="confirm_modal('<?php echo site_url('admin/invoices/delete/'.$invoice['id']); ?>');">
+                                            <a href="#" onclick="confirm_modal('<?php echo site_url('admin/orders/delete/'.$order['id']); ?>');">
                                                 <?php echo get_phrase('delete');?>
                                             </a>
                                         </li>

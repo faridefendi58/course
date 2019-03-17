@@ -260,6 +260,18 @@ class Crud_model extends CI_Model {
         $data['value'] = html_escape($this->input->post('currency_position'));
         $this->db->where('key', 'currency_position');
         $this->db->update('settings', $data);
+
+        $data['value'] = html_escape($this->input->post('thousand_separator'));
+        $this->db->where('key', 'thousand_separator');
+        $this->db->update('settings', $data);
+
+        $data['value'] = html_escape($this->input->post('decimal_separator'));
+        $this->db->where('key', 'decimal_separator');
+        $this->db->update('settings', $data);
+
+        $data['value'] = html_escape($this->input->post('number_of_decimal'));
+        $this->db->where('key', 'number_of_decimal');
+        $this->db->update('settings', $data);
     }
 
     public function update_instructor_settings() {

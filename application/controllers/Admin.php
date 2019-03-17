@@ -852,4 +852,35 @@ class Admin extends CI_Controller {
             $this->load->view('backend/index', $page_data);
         }
     }
+    /** endof invoices */
+
+    /** start of orders */
+    public function orders($param1 = "", $param2 = "") {
+        if ($this->session->userdata('admin_login') != true) {
+            redirect(site_url('login'), 'refresh');
+        }
+        if ($param1 == "add") {
+            $this->invoice_model->add_invoice();
+            redirect(site_url('admin/invoices'), 'refresh');
+        }
+        elseif ($param1 == "edit") {
+            $this->invoice_model->edit_invoice($param2);
+            redirect(site_url('admin/invoices'), 'refresh');
+        }
+        elseif ($param1 == "delete") {
+            $this->invoice_model->delete_invoice($param2);
+            redirect(site_url('admin/invoices'), 'refresh');
+        }
+        elseif ($param1 == "activate") {
+            $this->order_model->activate($param2);
+            redirect(site_url('admin/orders/view/1'), 'refresh');
+        }
+
+        $this->session->set_userdata('last_page', 'orders');
+        $page_data['page_name'] = 'orders';
+        $page_data['page_title'] = get_phrase('orders');
+        $page_data['orders'] = $this->order_model->get_orders_by_status($param2);
+        $this->load->view('backend/index', $page_data);
+    }
+    /** endof orders */
 }
