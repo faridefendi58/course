@@ -21,9 +21,15 @@ class Order_model extends CI_Model {
     }
 
     public function get_order($id = 0) {
+        $this->db->select('orders.*, users.first_name, 
+        users.last_name, course.title AS course_name, invoice.cash AS invoice_total, invoice.status AS invoice_status');
         if ($id > 0) {
-            $this->db->where('id', $id);
+            $this->db->where('orders.id', $id);
         }
+
+        $this->db->join('users', 'orders.user_id = users.id', 'left');
+        $this->db->join('course', 'orders.course_id = course.id', 'left');
+        $this->db->join('invoice', 'orders.invoice_id = invoice.id', 'left');
 
         return $this->db->get('orders');
     }
@@ -60,7 +66,8 @@ class Order_model extends CI_Model {
     }
 
     public function edit_order($order_id = "") { // Admin does this editing
-        $data = [];
+        $data = $this->input->post('Order', TRUE);
+        $data['last_modified'] = time();
         $this->db->where('id', $order_id);
         $this->db->update('orders', $data);
         $this->session->set_flashdata('flash_message', get_phrase('order_update_successfully'));
@@ -133,6 +140,55 @@ class Order_model extends CI_Model {
         }
     }
 
+    public function suspend($order_id)
+    {
+        $model = $this->get_order($order_id)->row();
+
+        $data1 = [
+            'status' => self::STATUS_SUSPENDED,
+            'last_modified' => time(),
+            'suspended_at' => time(),
+        ];
+        $this->db->where('id', $order_id);
+        $this->db->update('orders', $data1);
+
+        // purchase course
+        $is_enrolled = $this->crud_model->is_already_enrolled($model->course_id, $model->user_id);
+        if ($is_enrolled) {
+        }
+    }
+
+    public function unsuspend($order_id)
+    {
+        $model = $this->get_order($order_id)->row();
+
+        $data1 = [
+            'status' => self::STATUS_ACTIVE,
+            'last_modified' => time(),
+            'suspended_at' => null,
+        ];
+        $this->db->where('id', $order_id);
+        $this->db->update('orders', $data1);
+
+        // purchase course
+        $is_enrolled = $this->crud_model->is_already_enrolled($model->course_id, $model->user_id);
+        if ($is_enrolled) {
+        }
+    }
+
+    public function complete($order_id)
+    {
+        $model = $this->get_order($order_id)->row();
+
+        $data1 = [
+            'status' => self::STATUS_COMPLETED,
+            'last_modified' => time(),
+            'completed_at' => time(),
+        ];
+        $this->db->where('id', $order_id);
+        $this->db->update('orders', $data1);
+    }
+
     public function get_orders_by_status($status = 0) {
         $this->db->select('orders.*, users.first_name, users.last_name, course.title AS course_name');
         $this->db->where('orders.status', $status);
@@ -143,7 +199,7 @@ class Order_model extends CI_Model {
         return $this->db->get('orders');
     }
 
-    public function getStatus($id_status = null) {
+    public function getStatus($id_status = -1) {
         $items = [
             self::STATUS_PENDING => 'Pending',
             self::STATUS_ACTIVE => 'Active',

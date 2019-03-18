@@ -46,12 +46,12 @@
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-default" data-toggle="dropdown"> <i class = "fa fa-ellipsis-v"></i> </button>
                                     <ul class="dropdown-menu pull-right">
-                                        <?php /*<li>
-                                            <a href="<?php echo site_url('admin/invoice_form/edit_invoice_form/'.$order['id']) ?>">
-                                                <?php echo get_phrase('edit');?>
+                                        <li>
+                                            <a href="<?php echo site_url('admin/orders/detail/'.$order['id']) ?>">
+                                                <?php echo get_phrase('detail');?>
                                             </a>
                                         </li>
-                                        <li class="divider"></li>*/ ?>
+                                        <li class="divider"></li>
                                         <?php if ($order['status'] == 0): ?>
                                         <li>
                                             <a href="<?php echo site_url('admin/orders/activate/'.$order['id']) ?>">

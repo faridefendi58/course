@@ -204,4 +204,18 @@ class Invoice_model extends CI_Model {
 
         $this->session->set_flashdata('flash_message', get_phrase('invoice_marked_as_paid_successfully'));
     }
+
+    public function getStatus($id_status = -1) {
+        $items = [
+            self::STATUS_UNPAID => 'Unpaid',
+            self::STATUS_PAID => 'Paid',
+            self::STATUS_REFUND => 'Refunded'
+        ];
+
+        if ($id_status >= 0) {
+            return $items[$id_status];
+        }
+
+        return $items;
+    }
 }
