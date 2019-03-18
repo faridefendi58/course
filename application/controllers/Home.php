@@ -575,4 +575,30 @@ class Home extends CI_Controller {
             flush();
         }
     }
+
+    public function my_invoices($hash = null) {
+        if ($this->session->userdata('user_login') != true) {
+            redirect(site_url('home'), 'refresh');
+        }
+
+        if (!empty($hash)) {
+            $page_data['page_name']  = 'my_invoice_details';
+            $page_data['hash']  = $hash;
+            $page_data['page_title'] = get_phrase('detail_invoice');
+            $this->load->view('frontend/default/index', $page_data);
+
+            return false;
+        }
+
+        $total_rows = $this->crud_model->my_invoices($this->session->userdata('user_id'))->num_rows();
+        $config = array();
+        $config = pagintaion($total_rows, 3);
+
+        $config['base_url']  = site_url('home/my_invoices');
+        $this->pagination->initialize($config);
+        $page_data['per_page']   = $config['per_page'];
+        $page_data['page_name']  = "my_invoices";
+        $page_data['page_title'] = get_phrase('my_invoices');
+        $this->load->view('frontend/default/index', $page_data);
+    }
 }

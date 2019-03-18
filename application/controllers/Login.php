@@ -86,6 +86,7 @@ class Login extends CI_Controller {
 
         $validity = $this->user_model->check_duplication('on_create', $data['email']);
         if ($validity) {
+            $data['date_added'] = time();
             $user_id = $this->user_model->register_user($data);
             $this->session->set_userdata('user_login', '1');
             $this->session->set_userdata('user_id', $user_id);
@@ -93,6 +94,11 @@ class Login extends CI_Controller {
             $this->session->set_userdata('role', get_user_role('user_role', 2));
             $this->session->set_userdata('name', $data['first_name'].' '.$data['last_name']);
             $this->session->set_flashdata('flash_message', get_phrase('your_registration_has_been_successfully_done'));
+
+            $url = $_SERVER['HTTP_REFERER'];
+            if (!empty($url)) {
+                redirect($url, 'refresh');
+            }
         }else {
             $this->session->set_flashdata('error_message', get_phrase('email_duplication'));
         }

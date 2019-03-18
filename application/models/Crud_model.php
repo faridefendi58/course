@@ -1205,4 +1205,12 @@ class Crud_model extends CI_Model {
 
         return ($this->db->get('enroll')->num_rows() > 0);
     }
+
+    public function my_invoices($user_id) {
+        if ($user_id > 0) {
+            return $this->db->get_where('invoice', array('user_id'=> $user_id));
+        }else {
+            return $this->db->get('invoice');
+        }
+    }
 }

@@ -238,4 +238,13 @@ class Invoice_model extends CI_Model {
 
         return $items;
     }
+
+    public function get_invoice_by_hash($hash) {
+        $this->db->select('invoice.*, users.first_name, users.last_name');
+        $this->db->where('invoice.hash', $hash);
+
+        $this->db->join('users', 'invoice.user_id = users.id', 'left');
+
+        return $this->db->get('invoice');
+    }
 }
