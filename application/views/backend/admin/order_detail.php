@@ -54,13 +54,28 @@
                         </tbody>
                     </table>
                     <?php if ($model->status == 0): ?>
-                        <a href="<?php echo site_url('admin/orders/activate/'. $model->id); ?>" class="btn btn-info"><?php echo get_phrase('activate'); ?></a>
-                        <a href="<?php echo site_url('admin/orders/delete/'. $model->id); ?>" class="btn btn-danger"><?php echo get_phrase('delete'); ?></a>
+                        <a href="<?php echo site_url('admin/orders/activate/'. $model->id); ?>"
+                           class="btn btn-info" onclick="return confirm_action(this);"
+                           msg="<?php echo get_phrase('are_you_sure_to_activate?'); ?>">
+                            <?php echo get_phrase('activate'); ?></a>
+                        <a href="#" class="btn btn-danger"
+                           onclick="confirm_modal('<?php echo site_url('admin/orders/delete/'. $model->id); ?>">
+                            <?php echo get_phrase('delete'); ?>
+                        </a>
                     <?php elseif ($model->status == 1): ?>
-                        <a href="<?php echo site_url('admin/orders/complete/'. $model->id); ?>" class="btn btn-info"><?php echo get_phrase('complete'); ?></a>
-                        <a href="<?php echo site_url('admin/orders/suspend/'. $model->id); ?>" class="btn btn-warning"><?php echo get_phrase('suspend'); ?></a>
+                        <a href="<?php echo site_url('admin/orders/complete/'. $model->id); ?>"
+                           class="btn btn-info" onclick="return confirm_action(this);"
+                           msg="<?php echo get_phrase('are_you_sure_to_complete?'); ?>">
+                            <?php echo get_phrase('complete'); ?></a>
+                        <a href="<?php echo site_url('admin/orders/suspend/'. $model->id); ?>"
+                           class="btn btn-warning" onclick="return confirm_action(this);"
+                           msg="<?php echo get_phrase('are_you_sure_to_suspend?'); ?>">
+                            <?php echo get_phrase('suspend'); ?></a>
                     <?php elseif ($model->status == 2): ?>
-                        <a href="<?php echo site_url('admin/orders/unsuspend/'. $model->id); ?>" class="btn btn-info"><?php echo get_phrase('unsuspend'); ?></a>
+                        <a href="<?php echo site_url('admin/orders/unsuspend/'. $model->id); ?>"
+                           class="btn btn-info" onclick="return confirm_action(this);"
+                           msg="<?php echo get_phrase('are_you_sure_to_suspend?'); ?>">
+                            <?php echo get_phrase('unsuspend'); ?></a>
                     <?php endif; ?>
                 </div>
             </div>
@@ -181,3 +196,15 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    function confirm_action(dt) {
+        var msg = $(dt).attr('msg');
+        if (confirm(msg)) {
+            var href = $(dt).attr('href');
+            window.location.href = href;
+        }
+
+        return false;
+    }
+</script>

@@ -51,20 +51,21 @@
                                                 <?php echo get_phrase('detail');?>
                                             </a>
                                         </li>
-                                        <li class="divider"></li>
                                         <?php if ($order['status'] == 0): ?>
+                                        <li class="divider"></li>
                                         <li>
-                                            <a href="<?php echo site_url('admin/orders/activate/'.$order['id']) ?>">
+                                            <a href="<?php echo site_url('admin/orders/activate/'.$order['id']) ?>"
+                                               onclick="return confirm_action(this);" msg="<?php echo get_phrase('are_you_sure_to_activate?'); ?>">
                                                 <?php echo get_phrase('activate');?>
                                             </a>
                                         </li>
                                         <li class="divider"></li>
-                                        <?php endif; ?>
                                         <li>
                                             <a href="#" onclick="confirm_modal('<?php echo site_url('admin/orders/delete/'.$order['id']); ?>');">
                                                 <?php echo get_phrase('delete');?>
                                             </a>
                                         </li>
+                                        <?php endif; ?>
                                     </ul>
                                 </div>
                             </td>
@@ -77,18 +78,14 @@
     </div>
 </div>
 
+<script type="text/javascript">
+    function confirm_action(dt) {
+        var msg = $(dt).attr('msg');
+        if (confirm(msg)) {
+            var href = $(dt).attr('href');
+            window.location.href = href;
+        }
 
-<div class="row">
-    <div class="col-md-12">
-        <div class="grid simple">
-            <div class="grid-body no-border">
-
-
-                <div class="row">
-                    <br>
-
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+        return false;
+    }
+</script>

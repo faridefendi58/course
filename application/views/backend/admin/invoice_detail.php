@@ -46,10 +46,15 @@
                         </tbody>
                     </table>
                     <?php if ($model->status == 0): ?>
-                        <a href="<?php echo site_url('admin/invoices/mark_as_paid/'. $model->id); ?>" class="btn btn-info"><?php echo get_phrase('mark_as_paid'); ?></a>
-                        <a href="<?php echo site_url('admin/invoices/delete/'. $model->id); ?>" class="btn btn-danger"><?php echo get_phrase('delete'); ?></a>
+                        <a href="<?php echo site_url('admin/invoices/mark_as_paid/'. $model->id); ?>"
+                           class="btn btn-info" onclick="return confirm_action(this);" msg="<?php echo get_phrase('are_you_sure_to_mark_this_as_paid?'); ?>">
+                            <?php echo get_phrase('mark_as_paid'); ?></a>
+                        <a href="<?php echo site_url('admin/invoices/delete/'. $model->id); ?>"
+                           class="btn btn-danger" onclick="return hapus(this);"><?php echo get_phrase('delete'); ?></a>
                     <?php elseif ($model->status == 1): ?>
-                        <a href="<?php echo site_url('admin/orders/refund/'. $model->id); ?>" class="btn btn-info"><?php echo get_phrase('complete'); ?></a>
+                        <a href="<?php echo site_url('admin/orders/refund/'. $model->id); ?>"
+                           class="btn btn-info" onclick="return confirm_action(this);" msg="<?php echo get_phrase('are_you_sure_to_refund?'); ?>">
+                            <?php echo get_phrase('refund'); ?></a>
                     <?php endif; ?>
                 </div>
             </div>
@@ -104,11 +109,53 @@
                 </div>
             </div>
 
-            <div id="invoice" class="tab-pane fade">
+            <div id="items" class="tab-pane fade">
                 <div class="col-md-8">
-
+                    <?php $invoice_items = $this->invoice_model->get_items($model->id); ?>
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <td style="text-align: center;"><?php echo get_phrase('id'); ?></td>
+                            <td style="text-align: center;"><?php echo get_phrase('title'); ?></td>
+                            <td style="text-align: center;"><?php echo get_phrase('quantity'); ?></td>
+                            <td style="text-align: center;"><?php echo get_phrase('price'); ?></td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php $no = 1; ?>
+                        <?php foreach ($invoice_items->result() as $invoice_item): ?>
+                        <tr>
+                            <td><?php echo $no; ?></td>
+                            <td><?php echo $invoice_item->title; ?></td>
+                            <td><center><?php echo $invoice_item->quantity; ?></center></td>
+                            <td><?php echo currency($invoice_item->price); ?></td>
+                        </tr>
+                            <?php $no++; ?>
+                        <?php endforeach; ?>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    function confirm_action(dt) {
+        var msg = $(dt).attr('msg');
+        if (confirm(msg)) {
+            var href = $(dt).attr('href');
+            window.location.href = href;
+        }
+
+        return false;
+    }
+    function hapus(dt) {
+        if (confirm("<?php echo get_phrase('are_you_sure_you_want_to_delete?'); ?>")) {
+            var href = $(dt).attr('href');
+            window.location.href = href;
+        }
+
+        return false;
+    }
+</script>

@@ -823,7 +823,7 @@ class Admin extends CI_Controller {
         }
         elseif ($param1 == "edit") {
             $this->invoice_model->edit_invoice($param2);
-            redirect(site_url('admin/invoices'), 'refresh');
+            redirect(site_url('admin/invoices/detail/'. $param2), 'refresh');
         }
         elseif ($param1 == "delete") {
             $this->invoice_model->delete_invoice($param2);
@@ -881,7 +881,7 @@ class Admin extends CI_Controller {
             redirect(site_url('admin/orders/detail/'. $param2), 'refresh');
         }
         elseif ($param1 == "delete") {
-            $this->order_model->delete_invoice($param2);
+            $this->order_model->delete_order($param2);
             redirect(site_url('admin/orders/view/0'), 'refresh');
         }
         elseif ($param1 == "activate") {

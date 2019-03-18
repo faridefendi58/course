@@ -76,6 +76,12 @@ class Order_model extends CI_Model {
     public function delete_order($order_id = "") {
         $this->db->where('id', $order_id);
         $this->db->delete('orders');
+
+        // update related order
+        $data = [ 'rel_id' => 0 ];
+        $this->db->where('rel_id', $order_id);
+        $this->db->update('invoice_item', $data);
+
         $this->session->set_flashdata('flash_message', get_phrase('order_deleted_successfully'));
     }
 

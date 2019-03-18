@@ -41,7 +41,7 @@ class Invoice_model extends CI_Model {
 
     public function get_invoices_by_status($status = 0) {
         $this->db->select('invoice.*, users.first_name, users.last_name');
-        $this->db->where('status', $status);
+        $this->db->where('invoice.status', $status);
 
         $this->db->join('users', 'invoice.user_id = users.id', 'left');
 
@@ -55,7 +55,7 @@ class Invoice_model extends CI_Model {
         $data0['cash'] = $this->input->post('total_price_of_checking_out');
         $data0['currency_id'] = $data['currency_id'];
         $data0['change_value'] = $data['change_value'];
-        $data0['status'] = 1;
+        $data0['status'] = self::STATUS_UNPAID;
         $data0['date_added'] = strtotime(date("Y-m-d H:i:s"));
         $data0['last_modified'] = strtotime(date("Y-m-d H:i:s"));
 
@@ -109,7 +109,9 @@ class Invoice_model extends CI_Model {
     }
 
     public function edit_invoice($invoice_id = "") { // Admin does this editing
-        $data = [];
+        $data = $this->input->post('Invoice', TRUE);
+        $data['last_modified'] = time();
+
         $this->db->where('id', $invoice_id);
         $this->db->update('invoice', $data);
         $this->session->set_flashdata('flash_message', get_phrase('invoice_update_successfully'));
@@ -118,6 +120,16 @@ class Invoice_model extends CI_Model {
     public function delete_invoice($invoice_id = "") {
         $this->db->where('id', $invoice_id);
         $this->db->delete('invoice');
+
+        // delete invoice item
+        $this->db->where('invoice_id', $invoice_id);
+        $this->db->delete('invoice_item');
+
+        // update related order
+        $data = [ 'invoice_id' => 0 ];
+        $this->db->where('invoice_id', $invoice_id);
+        $this->db->update('orders', $data);
+
         $this->session->set_flashdata('flash_message', get_phrase('invoice_deleted_successfully'));
     }
 
@@ -147,6 +159,10 @@ class Invoice_model extends CI_Model {
     {
         $this->db->where('id', $data['id']);
         $query = $this->db->get('invoice');
+        if ($query->num_rows() == 0) {
+            return '-';
+        }
+
         $result = $query->row();
 
         $nr = str_repeat('0',4-strlen($result->nr));
@@ -171,7 +187,7 @@ class Invoice_model extends CI_Model {
         return $next_group_id;
     }
 
-    public function get_items($invoice_id = 0) {
+    public function get_items($invoice_id = -1) {
         $this->db->select('invoice_item.*, orders.course_id, orders.invoice_id as unpaid_invoice_id');
         if ($invoice_id > 0) {
             $this->db->where('invoice_item.invoice_id', $invoice_id);

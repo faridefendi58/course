@@ -49,9 +49,11 @@
                                                 <?php echo get_phrase('detail');?>
                                             </a>
                                         </li>
+                                        <?php if ($invoice['status'] == 0): ?>
                                         <li class="divider"></li>
                                         <li>
-                                            <a href="<?php echo site_url('admin/invoices/mark_as_paid/'.$invoice['id']) ?>">
+                                            <a href="<?php echo site_url('admin/invoices/mark_as_paid/'.$invoice['id']) ?>"
+                                               onclick="return confirm_action(this);" msg="<?php echo get_phrase('are_you_sure_to_mark_this_as_paid?'); ?>">
                                                 <?php echo get_phrase('mark_as_paid');?>
                                             </a>
                                         </li>
@@ -61,6 +63,7 @@
                                                 <?php echo get_phrase('delete');?>
                                             </a>
                                         </li>
+                                        <?php endif; ?>
                                     </ul>
                                 </div>
                             </td>
@@ -73,18 +76,14 @@
     </div>
 </div>
 
+<script type="text/javascript">
+    function confirm_action(dt) {
+        var msg = $(dt).attr('msg');
+        if (confirm(msg)) {
+            var href = $(dt).attr('href');
+            window.location.href = href;
+        }
 
-<div class="row">
-    <div class="col-md-12">
-        <div class="grid simple">
-            <div class="grid-body no-border">
-
-
-                <div class="row">
-                    <br>
-
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+        return false;
+    }
+</script>
