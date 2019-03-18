@@ -294,19 +294,19 @@ class Home extends CI_Controller {
             }
         }
         $params['cart_items'] = $cart_items;
+        $hash = null;
         try {
-            $this->invoice_model->add_invoice($params);
+            $hash = $this->invoice_model->add_invoice($params);
         } catch (Exception $e) {
             var_dump($e->getMessage()); exit;
         }
 
         $this->session->set_userdata('cart_items', array());
-        redirect('home', 'refresh');
-        /*$total_price_of_checking_out  = $this->input->post('total_price_of_checking_out');
-        $page_data['user_details']    = $this->user_model->get_user($this->session->userdata('user_id'))->row_array();
-        $page_data['amount_to_pay']   = $total_price_of_checking_out;*/
-
-        //redirect(site_url('home/payment_success/transferbank/'.$this->session->userdata('user_id').'/'.$total_price_of_checking_out), 'refresh');
+        if (!empty($hash)) {
+            redirect('home/my_invoices/'. $hash, 'refresh');
+        } else {
+            redirect('home', 'refresh');
+        }
     }
 
     public function payment_success($method = "", $user_id = "", $amount_paid = "") {

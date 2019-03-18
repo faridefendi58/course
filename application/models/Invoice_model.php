@@ -58,6 +58,7 @@ class Invoice_model extends CI_Model {
         $data0['status'] = self::STATUS_UNPAID;
         $data0['date_added'] = strtotime(date("Y-m-d H:i:s"));
         $data0['last_modified'] = strtotime(date("Y-m-d H:i:s"));
+        $data0['hash'] = md5($data0['date_added']);
 
         try {
             $this->db->insert('invoice', $data0);
@@ -106,6 +107,7 @@ class Invoice_model extends CI_Model {
             }
         }
         $this->session->set_flashdata('flash_message', get_phrase('order_added_successfully'));
+        return $data0['hash'];
     }
 
     public function edit_invoice($invoice_id = "") { // Admin does this editing
