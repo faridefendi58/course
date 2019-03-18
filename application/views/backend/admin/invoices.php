@@ -44,12 +44,12 @@
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-default" data-toggle="dropdown"> <i class = "fa fa-ellipsis-v"></i> </button>
                                     <ul class="dropdown-menu pull-right">
-                                        <?php /*<li>
-                                            <a href="<?php echo site_url('admin/invoice_form/edit_invoice_form/'.$invoice['id']) ?>">
-                                                <?php echo get_phrase('edit');?>
+                                        <li>
+                                            <a href="<?php echo site_url('admin/invoices/detail/'.$invoice['id']) ?>">
+                                                <?php echo get_phrase('detail');?>
                                             </a>
                                         </li>
-                                        <li class="divider"></li>*/ ?>
+                                        <li class="divider"></li>
                                         <li>
                                             <a href="<?php echo site_url('admin/invoices/mark_as_paid/'.$invoice['id']) ?>">
                                                 <?php echo get_phrase('mark_as_paid');?>

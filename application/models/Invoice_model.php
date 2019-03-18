@@ -18,9 +18,13 @@ class Invoice_model extends CI_Model {
     }
 
     public function get_invoice($id = 0) {
+        $this->db->select('invoice.*, users.first_name, users.last_name');
+
         if ($id > 0) {
-            $this->db->where('id', $id);
+            $this->db->where('invoice.id', $id);
         }
+
+        $this->db->join('users', 'invoice.user_id = users.id', 'left');
 
         return $this->db->get('invoice');
     }

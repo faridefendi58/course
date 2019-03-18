@@ -811,9 +811,15 @@ class Admin extends CI_Controller {
         if ($this->session->userdata('admin_login') != true) {
             redirect(site_url('login'), 'refresh');
         }
-        if ($param1 == "add") {
-            $this->invoice_model->add_invoice();
-            redirect(site_url('admin/invoices'), 'refresh');
+
+        $model = $this->invoice_model->get_invoice($param2)->row();
+        if ($param1 == "detail") {
+            $this->session->set_userdata('last_page', 'invoices');
+            $page_data['page_name'] = 'invoice_detail';
+            $page_data['page_title'] = get_phrase('invoice_detail');
+            $page_data['model'] = $model;
+            $this->load->view('backend/index', $page_data);
+            return false;
         }
         elseif ($param1 == "edit") {
             $this->invoice_model->edit_invoice($param2);
