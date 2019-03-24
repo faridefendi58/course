@@ -15,7 +15,6 @@ class Admin extends CI_Controller {
 
     public function index() {
         if ($this->session->userdata('admin_login') == true) {
-            echo 'true';
             $this->dashboard();
         }else {
             redirect(site_url('login'), 'refresh');
@@ -26,9 +25,11 @@ class Admin extends CI_Controller {
         if ($this->session->userdata('admin_login') != true) {
             redirect(site_url('login'), 'refresh');
         }
+        
         $this->session->set_userdata('last_page', 'dashboard');
         $page_data['page_name'] = 'dashboard';
         $page_data['page_title'] = get_phrase('dashboard');
+
         $this->load->view('backend/index.php', $page_data);
     }
 
@@ -803,6 +804,57 @@ class Admin extends CI_Controller {
 
       echo $checker['phrase_id'].' '.$this->input->post('currentEditingLanguage').' '.$this->input->post('updatedValue');
     }
+
+    /**
+     * Manage User Admin
+     * @param string $param1
+     * @param string $param2
+     */
+    public function manage_users($param1 = "", $param2 = "") {
+        if ($this->session->userdata('admin_login') != true) {
+            redirect(site_url('login'), 'refresh');
+        }
+        if ($param1 == "add") {
+            $this->user_model->add_user();
+            redirect(site_url('admin/manage_users'), 'refresh');
+        }
+        elseif ($param1 == "edit") {
+            $this->user_model->edit_user($param2);
+            redirect(site_url('admin/manage_users'), 'refresh');
+        }
+        elseif ($param1 == "delete") {
+            $this->user_model->delete_user($param2);
+            redirect(site_url('admin/manage_users'), 'refresh');
+        }
+
+        $this->session->set_userdata('last_page', 'manage_users');
+        $page_data['page_name'] = 'admins';
+        $page_data['page_title'] = get_phrase('manage_users');
+        $page_data['users'] = $this->user_model->get_user($param2, 1);
+
+        $this->load->view('backend/index', $page_data);
+    }
+
+    public function admin_form($param1 = "", $param2 = "") {
+        if ($this->session->userdata('admin_login') != true) {
+            redirect(site_url('login'), 'refresh');
+        }
+
+        if ($param1 == 'add_admin_form') {
+            $page_data['page_name'] = 'admin_add';
+            $page_data['page_title'] = get_phrase('user_add');
+            $this->load->view('backend/index', $page_data);
+        }
+        elseif ($param1 == 'edit_admin_form') {
+            $page_data['page_name'] = 'admin_edit';
+            $page_data['user_id'] = $param2;
+            $page_data['page_title'] = get_phrase('user_edit');
+            $this->load->view('backend/index', $page_data);
+        }
+    }
+    /**
+     * Endof manage admin usr
+     */
 
     /**
      * Invoices

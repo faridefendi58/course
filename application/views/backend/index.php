@@ -3,7 +3,12 @@
     $system_title = $this->db->get_where('settings' , array('key'=>'system_title'))->row()->value;
     $user_details = $this->user_model->get_all_user($this->session->userdata('user_id'))->row_array();
     $text_align     = $this->db->get_where('settings', array('key' => 'text_align'))->row()->value;
-    $logged_in_user_role = strtolower($this->session->userdata('role'));
+
+    if ($this->session->userdata('user_login') == true) {
+        $logged_in_user_role = 'admin';
+    } else {
+        $logged_in_user_role = strtolower($this->session->userdata('role'));
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="<?php if ($text_align == 'right-to-left') echo 'rtl'; ?>">
@@ -22,6 +27,7 @@
 <body class="page-body" data-url="http://neon.dev">
     <!-- BEGIN CONTAINER -->
     <div class="page-container">
+        <?php if (!is_expired()) : ?>
         <?php include $logged_in_user_role.'/'.'navigation.php' ?>
         <div class="main-content">
 			<?php include 'header.php';?>
@@ -29,6 +35,7 @@
 			<?php include $logged_in_user_role.'/'.$page_name.'.php';?>
             <?php include 'footer.php';?>
 		</div>
+        <?php endif; ?>
     </div>
 </body>
 <?php include 'modal.php';?>

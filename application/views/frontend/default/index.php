@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,15 +32,19 @@
 </head>
 <body class="gray-bg">
 	<?php
-	if ($this->session->userdata('user_login')) {
-		include 'logged_in_header.php';
-	}else {
-		include 'logged_out_header.php';
-	}
-	include $page_name.'.php';
-	include 'footer.php';
-	include 'includes_bottom.php';
-	include 'modal.php';
+    if (!is_expired()) {
+        if ($this->session->userdata('user_login')) {
+            include 'logged_in_header.php';
+        } else {
+            include 'logged_out_header.php';
+        }
+
+        include $page_name . '.php';
+
+        include 'footer.php';
+        include 'includes_bottom.php';
+        include 'modal.php';
+    }
 	?>
 </body>
 </html>

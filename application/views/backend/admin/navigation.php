@@ -153,7 +153,7 @@
             </a>
         </li>
 
-        <li class = "<?php echo is_multi_level_active(['system_settings', 'payment_settings', 'manage_language', 'frontend_settings', 'instructor_settings'], 1); ?>">
+        <li class = "<?php echo is_multi_level_active(['system_settings', 'payment_settings', 'manage_language', 'frontend_settings', 'instructor_settings', 'manage_users'], 1); ?>">
             <a href="javascript:;">
                 <i class="fa fa-sliders"></i>
 				<span><?php echo get_phrase('settings'); ?></span>
@@ -164,6 +164,7 @@
                 <li class = "<?php echo is_active('instructor_settings'); ?>" > <a href="<?php echo site_url('admin/instructor_settings'); ?>"><?php echo get_phrase('instructor_settings'); ?></a> </li>
                 <li class = "<?php echo is_active('payment_settings'); ?>" > <a href="<?php echo site_url('admin/payment_settings'); ?>"><?php echo get_phrase('payment_settings'); ?></a> </li>
                 <li class = "<?php echo is_active('manage_language'); ?>" > <a href="<?php echo site_url('admin/manage_language'); ?>"><?php echo get_phrase('manage_language'); ?></a> </li>
+                <li class = "<?php echo is_active('manage_users'); ?>" > <a href="<?php echo site_url('admin/manage_users'); ?>"><?php echo get_phrase('manage_users'); ?></a> </li>
                 <br>
             </ul>
         </li>

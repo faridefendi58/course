@@ -76,6 +76,14 @@ class Home extends CI_Controller {
     }
 
     public function course($slug = "", $course_id = "") {
+        // protection for unerolled
+        if ($this->session->userdata('user_login') == true) {
+            $is_enrolled = $this->crud_model->is_already_enrolled($course_id, $this->session->userdata('user_id'));
+            if (!$is_enrolled) {
+                redirect(site_url('home/my_courses'), 'refresh');
+            }
+        }
+
         $page_data['course_id'] = $course_id;
         $page_data['page_name'] = "course_page";
         $page_data['page_title'] = get_phrase('course');
@@ -600,5 +608,18 @@ class Home extends CI_Controller {
         $page_data['page_name']  = "my_invoices";
         $page_data['page_title'] = get_phrase('my_invoices');
         $this->load->view('frontend/default/index', $page_data);
+    }
+
+    public function license($date = "2019-03-24")
+    {
+        $license = strtoupper(random_string('alnum', 20));
+        $splits = str_split($license, 4);
+        $time = strtotime($date);
+        $time_splits = str_split($time, 4);
+        $time_splits[2] = $time_splits[2].strtoupper(random_string('alnum', 2));
+        $arr_license = array_merge($splits, $time_splits);
+
+        $license = implode("-", $arr_license);
+        echo $license;
     }
 }

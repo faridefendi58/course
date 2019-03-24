@@ -15,11 +15,11 @@ class User_model extends CI_Model {
         return $this->db->get_where('users', array('role_id' => 1));
     }
 
-    public function get_user($user_id = 0) {
+    public function get_user($user_id = 0, $role_id = 2) {
         if ($user_id > 0) {
             $this->db->where('id', $user_id);
         }
-        $this->db->where('role_id', 2);
+        $this->db->where('role_id', $role_id);
         return $this->db->get('users');
     }
 
@@ -44,7 +44,7 @@ class User_model extends CI_Model {
             $social_link['linkedin'] = html_escape($this->input->post('linkedin_link'));
             $data['social_links'] = json_encode($social_link);
             $data['biography'] = $this->input->post('biography');
-            $data['role_id'] = 2;
+            $data['role_id'] = (!empty($this->input->post('role_id')))? html_escape($this->input->post('role_id')) :2;
             $data['date_added'] = strtotime(date("Y-m-d H:i:s"));
             $data['wishlist'] = json_encode(array());
             $data['watch_history'] = json_encode(array());

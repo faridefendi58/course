@@ -162,6 +162,35 @@ if ( ! function_exists('get_video_extension'))
     }
 }
 
+if ( ! function_exists('is_expired'))
+{
+    function is_expired() {
+        $CI	=&	get_instance();
+        $CI->load->database();
+
+        $CI->db->where('key', 'purchase_code');
+
+        $value = null;
+        try {
+            $row = $CI->db->get('settings')->row();
+            if (is_object($row)) {
+                $value = $row->value;
+            }
+        } catch (Exception $e) {}
+
+        if (!empty($value)) {
+            $splits = explode("-", $value);
+            $length = count($splits);
+            $end = end($splits);
+            $str_end = str_split($end, 2);
+            $time = $splits[$length-3].$splits[$length-2].$str_end[0];
+
+            return (time() > $time);
+        }
+        return false;
+    }
+}
+
 // ------------------------------------------------------------------------
 /* End of file user_helper.php */
 /* Location: ./system/helpers/common.php */
