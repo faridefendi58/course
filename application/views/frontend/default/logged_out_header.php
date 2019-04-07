@@ -9,7 +9,7 @@
                     			<li><a class="mobile-search-trigger" href="#mobile-search">Search<span></span></a></li>
                     		</ul>
 
-                            <a href="<?php echo site_url(''); ?>" class="navbar-brand" href="#"><img src="<?php echo base_url().'assets/frontend/img/logo.png'; ?>" alt="" height="30"></a>
+                            <a href="<?php echo site_url(''); ?>" class="navbar-brand" href="#"><img src="<?php echo base_url().'assets/frontend/img/logo.png'; ?>" alt="" height="50"></a>
 
                             <?php include 'menu.php'; ?>
 

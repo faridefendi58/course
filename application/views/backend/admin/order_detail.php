@@ -178,7 +178,7 @@
                                 <tr>
                                     <td><?php echo get_phrase('invoice_number'); ?></td>
                                     <td>
-                                        <a href="<?php echo site_url('admin/invoices/detail/'. $model->invoice_id); ?>">
+                                        <a href="<?php echo site_url('admin/invoices/detail/'. $model->invoice_id); ?>" class="color-blue">
                                             <?php echo $this->invoice_model->getInvoiceFormatedNumber(['id' => $model->invoice_id]); ?>
                                         </a>
                                     </td>

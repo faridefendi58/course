@@ -48,7 +48,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <p class="copyright-text">
-                            <a href=""><img src="<?php echo base_url().'assets/frontend/img/logo.png'; ?>" alt="" class="d-inline-block" width="110"></a>
+                            <a href=""><img src="<?php echo base_url().'assets/frontend/img/logo.png'; ?>" alt="" class="d-inline-block" width="150"></a>
                             <a href="<?php echo get_settings('footer_link'); ?>" target="_blank"><?php echo get_settings('footer_text'); ?></a>
                         </p>
                     </div>
@@ -63,11 +63,11 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="<?php echo site_url('home/terms_and_condition'); ?>"><?php echo get_phrase('terms_&_condition'); ?></a>
                             </li>
-                            <li class="nav-item">
+                            <?php /*<li class="nav-item">
                                 <a class="nav-link" href="<?php echo site_url('login'); ?>" target="_blank">
                                     <?php echo get_phrase('admin'); ?>
                                 </a>
-                            </li>
+                            </li>*/ ?>
                         </ul>
                     </div>
                 </div>

@@ -13,7 +13,7 @@
                     </ul>
 
                         <a href="<?php echo site_url(''); ?>" class="navbar-brand" href="#">
-                            <img src="<?php echo base_url().'assets/frontend/img/logo.png'; ?>" alt="" height="30">
+                            <img src="<?php echo base_url().'assets/frontend/img/logo.png'; ?>" alt="" height="50">
                         </a>
 
                         <?php include 'menu.php'; ?>
